@@ -1,6 +1,13 @@
 # klimaapp
 
-A new Flutter project.
+In this project I learn how to use geolocator http and flutter spinkit,
+Able to pass data back and forth multiple screens,
+use openweathermap api to create this app,
+spinkit for loading spins,
+http for getting data from the web,
+geolocator to get the current position of the device,
+understand more of async await and future and practice api.
+
 
 ## Getting Started
 
