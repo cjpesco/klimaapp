@@ -1,8 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:klimaapp/services/location.dart';
-import 'package:http/http.dart' as http;
+import 'package:klimaapp/screens/location_screen.dart';
+
+import 'package:klimaapp/services/weather.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -12,42 +12,31 @@ class LoadingScreen extends StatefulWidget {
 class _LoadingScreenState extends State<LoadingScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    getLocation();
+    getLocationData();
   }
 
-  void getLocation() async {
-    Location userLocation = new Location();
-    await userLocation.getCurrentLocation();
-    print(
-        'Latitude: ${userLocation.latitude} \nLongitude: ${userLocation.longitude}');
+  void getLocationData() async {
+    var weatherData = await WeatherModel().getLocationWeather();
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => LocationScreen(
+          locationWeather: weatherData,
+        ),
+      ),
+    );
   }
 
-  Future getData() async {
-    http.Response response =
-        await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts'));
-
-    if (response.statusCode == 200) {
-      // String data = response.body;
-      jsonDecode(response.body);
-
-      // print(response.body);
-    } else {
-      print(response.statusCode);
-    }
-  }
+  Future getData() async {}
 
   @override
   Widget build(BuildContext context) {
-    getData();
     return Scaffold(
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            getLocation();
-          },
-          child: Text('Get Location'),
+        child: SpinKitDoubleBounce(
+          color: Colors.white,
+          size: 100.0,
         ),
       ),
     );

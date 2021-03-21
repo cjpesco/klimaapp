@@ -1,4 +1,36 @@
+import 'package:klimaapp/services/location.dart';
+import 'package:klimaapp/services/networking.dart';
+
+const apiKey = 'put your openweathermap api api key here';
+const openWeatherMapUrl = 'http://api.openweathermap.org/data/2.5/weather';
+
 class WeatherModel {
+  Future<dynamic> getCityWeather(String cityName) async {
+    String url = '$openWeatherMapUrl?q=$cityName&appid=${apiKey}&units=metric';
+    print(url);
+
+    NetworkHelper networkHelper = new NetworkHelper(url);
+    var weatherData = await networkHelper.getData();
+
+    return weatherData;
+  }
+
+  Future<dynamic> getLocationWeather() async {
+    Location userLocation = new Location();
+    await userLocation.getCurrentLocation();
+    print(
+        'Latitude: ${userLocation.latitude} \nLongitude: ${userLocation.longitude}');
+
+    String url =
+        '$openWeatherMapUrl?lat=${userLocation.latitude}&lon=${userLocation.longitude}&appid=${apiKey}&units=metric';
+    print(url);
+
+    NetworkHelper networkHelper = new NetworkHelper(url);
+    var weatherData = await networkHelper.getData();
+
+    return weatherData;
+  }
+
   String getWeatherIcon(int condition) {
     if (condition < 300) {
       return '🌩';
